@@ -3,7 +3,7 @@ This is project of nRF905
 * nRF905-wireless-comunication
 ** nRF905 schema
 This is the schema for all the wireing with arduino
- [[file:nRF905_schema.png][Schema]]
+ [[file:nrf905_schema.png][Schema]]
 ** nRF905 library
 You can download the necessary library here
 [[https://github.com/zkemble/nRF905.git][Git repositories]]
