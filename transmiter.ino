@@ -1,5 +1,5 @@
 /*
- * Project: nRF905 AVR/Arduino Library/Driver (Low power ping client example)
+ * Project: nRF905 AVR/Arduino Library/Driver (Ping client example)
  * Author: Zak Kemble, contact@zakkemble.co.uk
  * Copyright: (C) 2017 by Zak Kemble
  * License: GNU GPL v3 (see License.txt)
@@ -7,9 +7,9 @@
  */
 
 /*
- * Similar to the ping client example
- * Power up the nRF905 to transmit some data, wait for a reply, turn off and wait for a second.
- * Output power is set to the lowest setting, receive sensitivity is lowered and uses the power up/down feature of the nRF905.
+ * Time how long it takes to send some data and get a reply
+ * Should be around 14-17ms with default settings.
+ * If the ping time is 0 or 1 then there is likely a problem with the client side wiring.
  *
  * 7 -> CE
  * 8 -> PWR
@@ -58,12 +58,6 @@ void setup()
 	
 	// Set address of this device
 	nRF905_setListenAddress(RXADDR);
-
-	// Lowest transmit level -10db
-	nRF905_setTransmitPower(NRF905_PWR_n10);
-	
-	// Reduce receive sensitivity to save a few mA
-	nRF905_setLowRxPower(NRF905_LOW_RX_ENABLE);
 }
 
 void loop()
@@ -87,7 +81,6 @@ void loop()
 	uint32_t startTime = millis();
 
 	// Send the data (send fails if other transmissions are going on, keep trying until success) and enter RX mode on completion
-	// If the radio is powered down then this function will take an additional 3ms to complete
 	while(!nRF905_TX(TXADDR, data, sizeof(data), NRF905_NEXTMODE_RX));
 	sent++;
 
@@ -140,9 +133,6 @@ void loop()
 		Serial.write(replyData, sizeof(replyData));
 		Serial.println();
 	}
-
-	// Turn off module
-	nRF905_powerDown();
 
 	Serial.print(F("Totals: "));
 	Serial.print(sent);
