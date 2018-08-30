@@ -1,5 +1,5 @@
 /*
- * Project: nRF905 AVR/Arduino Library/Driver (Low power ping server example)
+ * Project: nRF905 AVR/Arduino Library/Driver (Ping server example)
  * Author: Zak Kemble, contact@zakkemble.co.uk
  * Copyright: (C) 2017 by Zak Kemble
  * License: GNU GPL v3 (see License.txt)
@@ -7,10 +7,9 @@
  */
 
 /*
- * Low power ping server
+ * Ping server
  *
- * Similar to the pin server example
- * Output power is set to the lowest setting, receive sensitivity is lowered.
+ * Listen for packets and send them back
  *
  * 7 -> CE
  * 8 -> PWR
@@ -60,12 +59,6 @@ void setup()
 	// Set address of this device
 	nRF905_setListenAddress(RXADDR);
 
-	// Lowest transmit level -10db
-	nRF905_setTransmitPower(NRF905_PWR_n10);
-
-	// Reduce receive sensitivity to save a few mA
-	nRF905_setLowRxPower(NRF905_LOW_RX_ENABLE);
-
 	// Put into receive mode
 	nRF905_RX();
 }
@@ -79,7 +72,7 @@ void loop()
 
 	// Wait for data
 	while(packetStatus == PACKET_NONE);
-		
+
 	if(packetStatus != PACKET_OK)
 	{
 		invalids++;
