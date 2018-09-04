@@ -37,7 +37,15 @@ void setup()
 void loop() 
 {
   // Send the data for engine start
-  //while(!nRF905_TX(TXADDR, startcommand, sizeof(startcommand), NRF905_NEXTMODE_RX));
+  if(serial.available() > 0){
+    nRF905_TX();
+    int command = serial.read();
+    int i;
+    for(i = 0; i < 3; i++){
+      while(!nRF905_TX(TXADDR, command, sizeof(command), NRF905_NEXTMODE_RX));
+    }
+    nRF905_RX();
+  }
   
   // Wait for data
   while(packetStatus == PACKET_NONE);
